@@ -1,29 +1,4 @@
 <?php
-use Aws\Ssm\SsmClient;
-use Aws\Exception\AwsException;
-
-// Create an AWS SSM client
-$ssmClient = new SsmClient([
-    'region' => 'ap-south-1',
-    'version' => 'latest',
-]);
-
-// Retrieve the IP address from Parameter Store
-try {
-    $result = $ssmClient->getParameter([
-        'Name' => '/sqldatabase/privateip',
-        'WithDecryption' => false,
-    ]);
-
-    // Access the IP address value
-    $ipAddress = $result['Parameter']['Value'];
-} catch (AwsException $e) {
-    echo $e->getMessage();
-}
-
-// Use the retrieved IP address in your PHP code
-// ...
-
 session_start();
 $error='';
 if (isset($_POST['submit'])){
@@ -37,7 +12,7 @@ if (isset($_POST['submit'])){
     $password=$_POST['password'];
     $database="sample_website";
 
-    $connection=mysqli_connect($ipAddress,"username","Admin@121", $database);
+    $connection=mysqli_connect("192.168.1.10","username","Admin@121", $database);
 
     $email=stripslashes($email);
     $password=stripslashes($password);
